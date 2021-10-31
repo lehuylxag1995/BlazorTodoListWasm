@@ -1,0 +1,23 @@
+﻿@page "/todoList/Detail/{id?}"
+
+@if (Info == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <table class="table">
+        <tbody>
+
+            <tr>Id: @Info.Id</tr>
+            <tr>Name: @Info.NameTodo</tr>
+            <tr>Priority: @Info.Priority</tr>
+            <tr>Status: @Info.Status </tr>
+            <tr>Created Date: @Info.CreatedDate.ToShortDateString()</tr>
+
+        </tbody>
+    </table>
+    <div>
+        <a href="/TodoList">Quay lại</a>
+    </div>
+}

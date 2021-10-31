@@ -1,0 +1,75 @@
+﻿@page "/todoList"
+
+@if (_ListTodo == null || _ListAssignee is null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <div class="row">
+        <EditForm class="form-inline" Model="@reqSearch" OnSubmit="@FormSearch">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="NameSearch">Tên Việc Cần Làm: </label>
+                <InputText id="NameSearch" class="form-control" placeholder="Tên việc làm" @bind-Value="@reqSearch.Name" />
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="AssigneeSearch">Người dùng: </label>
+                <InputSelect id="AssigneeSearch" class="custom-select" @bind-Value="@reqSearch.Assignee">
+                    <option value="">- Chọn người dùng -</option>
+                    @foreach (var item in _ListAssignee)
+                        {
+                        <option value="@item.Id">@item.FullName</option>
+                        }
+                </InputSelect>
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="AssigneeSearch">Độ ưu tiên: </label>
+                <InputSelect id="AssigneeSearch" class="custom-select" @bind-Value="@reqSearch.Priority">
+                    <option value="">- Chọn mức độ -</option>
+                    @foreach (string item in _ListPriority)
+                        {
+                        <option value="@item">@item</option>
+                        }
+                </InputSelect>
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+                <button type="submit" class="btn btn-success">Tìm kiếm</button>
+            </div>
+        </EditForm>
+    </div>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created Date</th>
+                    <th>Features</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var todo in _ListTodo)
+                {
+                    <tr>
+                        <td>@todo.Id</td>
+                        <td>@todo.NameTodo</td>
+                        <td>@todo.Priority</td>
+                        <td>@todo.Status</td>
+                        <td>@todo.CreatedDate.ToShortDateString()</td>
+                        <td>
+                            <a href="@MyNavigationManager.Uri/Detail/@todo.Id">Detail</a> |
+                            <a href="@MyNavigationManager.Uri/Update/@todo.Id">Update</a> |
+                            <a href="@MyNavigationManager.Uri/Delete/@todo.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
