@@ -1,0 +1,49 @@
+﻿@page "/todoCreate"
+
+@if (_ListAssignee == null)
+{
+    <div>
+        <h2>Loading...</h2>
+    </div>
+}
+else
+
+{
+    <div class="row">
+        <div class="col-md-6">
+            <EditForm Model="_requestCreate">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label for="Name">Tên Kế Hoạch:</label>
+                    <InputText @bind-Value="_requestCreate.NameTodo" class="form-control" id="Name" placeholder="Nhập tên việc lên kế hoạch"></InputText>
+                    <ValidationMessage For="()=>_requestCreate.NameTodo" />
+                </div>
+                <div class="form-group">
+                    <label for="Priority">Độ ưu tiên:</label>
+                    <InputSelect @bind-Value="_requestCreate.Priority" class="custom-select" id="Priority">
+                        <option>- Chọn độ ưu tiên -</option>
+                        @foreach (var item in _listPriority)
+                            {
+                            <option value="@item">@item</option>
+                            }
+                    </InputSelect>
+                    <ValidationMessage For="()=>_requestCreate.Priority" />
+                </div>
+                <div class="form-group">
+                    <label for="Assignee">Giao việc cho:</label>
+                    <InputSelect @bind-Value="_requestCreate.AssignId" id="Assignee" class="custom-select">
+                        <option value="">- Chọn người dùng -</option>
+                        @foreach (var item in _ListAssignee)
+                            {
+                            <option value="@item.Id">@item.FullName</option>
+                            }
+                    </InputSelect>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Lưu lại</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+
