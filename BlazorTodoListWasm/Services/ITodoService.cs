@@ -10,6 +10,6 @@ namespace BlazorTodoListWasm.Services
     {
         public Task<List<TodoVm>> GetListAsync(RequestFormSearch reqSearch);
         public Task<TodoVm> GetInfoTodoByIdAsync(string Id);
-
+        public Task<bool> CreateAsync(RequestTodoCreate req);
     }
 }

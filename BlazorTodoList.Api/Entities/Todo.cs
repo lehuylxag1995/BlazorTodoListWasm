@@ -16,6 +16,7 @@ namespace BlazorTodoList.Api.Entities
         public DateTime CreatedDate { get; set; }
 
         public Guid? AssignId { get; set; }
+
         [ForeignKey("AssignId")]
         public User Assignee { get; set; }
     }

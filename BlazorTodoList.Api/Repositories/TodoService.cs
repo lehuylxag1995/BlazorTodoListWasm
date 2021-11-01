@@ -24,8 +24,8 @@ namespace BlazorTodoList.ViewModel.Repositories
                 Id = Guid.NewGuid(),
                 CreatedDate = DateTime.Now,
                 NameTodo = req.NameTodo,
-                Priority = (Enums.Priority)req.Priority,
-                Status = (Enums.Status)req.Status,
+                Priority = req.Priority ?? Enums.Priority.Low,
+                Status = req.Status,
                 AssignId = req.AssignId ?? null
             };
             await _context.Todoes.AddAsync(todoo);
@@ -43,7 +43,7 @@ namespace BlazorTodoList.ViewModel.Repositories
 
         public async Task<List<TodoVm>> GetListAsync(RequestFormSearch reqSearch)
         {
-            var query = _context.Todoes.AsQueryable();
+            var query = _context.Todoes.Include(x => x.Assignee).AsQueryable();
 
             if (!string.IsNullOrEmpty(reqSearch.Name))
             {
@@ -66,8 +66,9 @@ namespace BlazorTodoList.ViewModel.Repositories
                 CreatedDate = x.CreatedDate,
                 NameTodo = x.NameTodo,
                 Priority = x.Priority,
-                Status = x.Status
-            }).ToListAsync();
+                Status = x.Status,
+                AssigneeName = x.Assignee != null ? x.Assignee.FirstName + " " + x.Assignee.LastName : ""
+            }).OrderByDescending(x => x.CreatedDate).ToListAsync();
 
             return data;
         }

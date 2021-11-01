@@ -42,7 +42,7 @@ namespace BlazorTodoList.ViewModel.Controllers
 
         //POST: api/Todoes/Create
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromQuery] RequestTodoCreate req)
+        public async Task<IActionResult> Create([FromBody] RequestTodoCreate req)
         {
             var Id = await _todoService.CreateTaskAsync(req);
             if (string.IsNullOrEmpty(Id.ToString()))

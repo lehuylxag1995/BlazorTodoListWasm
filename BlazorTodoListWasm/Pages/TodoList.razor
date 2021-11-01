@@ -48,10 +48,11 @@ else
         <table class="table">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    @*<th>Id</th>*@
                     <th>Name</th>
                     <th>Priority</th>
                     <th>Status</th>
+                    <th>Assignee</th>
                     <th>Created Date</th>
                     <th>Features</th>
                 </tr>
@@ -60,10 +61,11 @@ else
                 @foreach (var todo in _ListTodo)
                 {
                     <tr>
-                        <td>@todo.Id</td>
+                        @*<td>@todo.Id</td>*@
                         <td>@todo.NameTodo</td>
-                        <td>@todo.Priority</td>
-                        <td>@todo.Status</td>
+                        <td><PriorityBadgeComponent Priority="@todo.Priority" /></td>
+                        <td><StatusBadgeComponent Status="@todo.Status" /></td>
+                        <td>@todo.AssigneeName</td>
                         <td>@todo.CreatedDate.ToShortDateString()</td>
                         <td>
                             <a href="@MyNavigationManager.Uri/Detail/@todo.Id">Detail</a> |

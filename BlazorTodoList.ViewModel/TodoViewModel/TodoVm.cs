@@ -14,6 +14,7 @@ namespace BlazorTodoList.ViewModel.TodoViewModel
         public Priority Priority { get; set; }
         public Status Status { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string AssigneeName { get; set; }
 
         //public Guid? AssignId { get; set; }
         //[ForeignKey("AssignId")]

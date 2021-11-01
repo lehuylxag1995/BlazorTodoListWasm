@@ -15,6 +15,10 @@ namespace BlazorTodoListWasm.Pages
     {
         [Inject]
         private IUserService _userService { get; set; }
+        [Inject]
+        private ITodoService _todoService { get; set; }
+        [Inject]
+        private NavigationManager _navigation { get; set; }
 
         private RequestTodoCreate _requestCreate = new RequestTodoCreate();
         private string[] _listPriority = Enum.GetNames(typeof(Priority));
@@ -27,7 +31,12 @@ namespace BlazorTodoListWasm.Pages
 
         private async Task SubmitCreate(EditContext form)
         {
-
+            if (form.Validate())
+            {
+                var result = await _todoService.CreateAsync((RequestTodoCreate)form.Model);
+                if (result)
+                    _navigation.NavigateTo("/todoList");
+            }
         }
     }
 }

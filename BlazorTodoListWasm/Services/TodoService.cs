@@ -17,6 +17,12 @@ namespace BlazorTodoListWasm.Services
             _httpClient = httpClient;
         }
 
+        public async Task<bool> CreateAsync(RequestTodoCreate req)
+        {
+            var result = await _httpClient.PostAsJsonAsync("Todoes/Create", req);
+            return result.IsSuccessStatusCode;
+        }
+
         public async Task<TodoVm> GetInfoTodoByIdAsync(string Id)
         {
             var data = await _httpClient.GetFromJsonAsync<TodoVm>($"Todoes/Get/{Id}");

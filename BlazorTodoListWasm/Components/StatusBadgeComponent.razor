@@ -1,0 +1,29 @@
+﻿@using BlazorTodoList.ViewModel.Enums
+
+@switch (Status)
+{
+    case Status.Open:
+        <span class="badge badge-pill badge-primary">Open</span>
+        break;
+    case Status.Inprocess:
+        <span class="badge badge-pill badge-success">Inprocess</span>
+        break;
+    case Status.Resolved:
+        <span class="badge badge-pill badge-secondary">Resolved</span>
+        break;
+    case Status.Done:
+        <span class="badge badge-pill badge-info">Done</span>
+        break;
+    case Status.Canceled:
+        <span class="badge badge-pill badge-dark">Canceled</span>
+        break;
+    case Status.Closed:
+        <span class="badge badge-pill badge-warning">Closed</span>
+        break;
+}
+
+@code {
+
+    [Parameter]
+    public Status Status { get; set; }
+}

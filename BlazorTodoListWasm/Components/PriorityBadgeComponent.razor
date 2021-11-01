@@ -1,0 +1,20 @@
+﻿@using BlazorTodoList.ViewModel.Enums
+
+@switch (Priority)
+{
+    case Priority.Low:
+        <span class="badge badge-pill badge-success">Low</span>
+        break;
+    case Priority.Medium:
+        <span class="badge badge-pill badge-warning">Medium</span>
+        break;
+    case Priority.High:
+        <span class="badge badge-pill badge-danger">High</span>
+        break;
+}
+
+@code {
+
+    [Parameter]
+    public Priority Priority { get; set; }
+}
