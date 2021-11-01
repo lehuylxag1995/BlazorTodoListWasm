@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using BlazorTodoListWasm.Services;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,8 +22,13 @@ namespace BlazorTodoListWasm
             //builder.Services.AddHttpClient("WebAPI", client =>
             //    client.BaseAddress = new Uri("https://localhost:5001"));
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = 
-                new Uri("https://localhost:5001/api/") });
+            builder.Services.AddScoped(sp => new HttpClient
+            {
+                BaseAddress =
+                new Uri("https://localhost:5001/api/")
+            });
+
+            builder.Services.AddBlazoredToast();
 
             builder.Services.AddTransient<ITodoService, TodoService>();
             builder.Services.AddTransient<IUserService, UserService>();

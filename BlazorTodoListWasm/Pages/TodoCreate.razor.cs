@@ -1,4 +1,5 @@
-﻿using BlazorTodoList.ViewModel.Enums;
+﻿using Blazored.Toast.Services;
+using BlazorTodoList.ViewModel.Enums;
 using BlazorTodoList.ViewModel.TodoViewModel;
 using BlazorTodoList.ViewModel.UserViewModel;
 using BlazorTodoListWasm.Services;
@@ -19,6 +20,8 @@ namespace BlazorTodoListWasm.Pages
         private ITodoService _todoService { get; set; }
         [Inject]
         private NavigationManager _navigation { get; set; }
+        [Inject]
+        private IToastService toastService { get; set; }
 
         private RequestTodoCreate _requestCreate = new RequestTodoCreate();
         private string[] _listPriority = Enum.GetNames(typeof(Priority));
@@ -35,7 +38,15 @@ namespace BlazorTodoListWasm.Pages
             {
                 var result = await _todoService.CreateAsync((RequestTodoCreate)form.Model);
                 if (result)
+                {
+                    toastService.ShowSuccess("Đã thêm công việc mới thành công", "Chúc mừng");
                     _navigation.NavigateTo("/todoList");
+                }
+                else
+                {
+                    toastService.ShowError("Vui lòng liên hệ Admin", "Lỗi");
+                }
+
             }
         }
     }
