@@ -1,0 +1,47 @@
+﻿@page "/todoList/Update/{Id}"
+
+
+@if (_info == null)
+{
+    <div>
+        <h2>Loading...</h2>
+    </div>
+}
+else
+
+{
+    <div class="row">
+        <div class="col-md-6">
+            <EditForm Model="_info" OnSubmit="SubmitUpdate">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label for="Name">Tên Kế Hoạch:</label>
+                    <InputText @bind-Value="_info.NameTodo" class="form-control" id="Name"></InputText>
+                    <ValidationMessage For="()=>_info.NameTodo" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Priority">Độ ưu tiên:</label>
+                    <InputSelect @bind-Value="_info.Priority" class="custom-select" id="Priority">
+                        @foreach (var item in _ListPriority)
+                            {
+                            <option value="@item">@item</option>
+                            }
+                    </InputSelect>
+                </div>
+
+                <div class="form-group">
+                    <label for="Assignee">Tình trạng:</label>
+                    <InputSelect @bind-Value="_info.Status" id="Assignee" class="custom-select">
+                        @foreach (var item in _ListStatus)
+                            {
+                            <option value="@item">@item</option>
+                            }
+                    </InputSelect>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Lưu lại</button>
+            </EditForm>
+        </div>
+    </div>
+}

@@ -51,7 +51,7 @@ namespace BlazorTodoList.ViewModel.Controllers
 
         //PUT: api/Todoes/Edit/{id}
         [HttpPut("Edit/{id}")]
-        public async Task<IActionResult> Edit(Guid id, [FromQuery] RequestTodoUpdate req)
+        public async Task<IActionResult> Edit(Guid id, [FromBody] RequestTodoUpdate req)
         {
             var data = await _todoService.UpdateTaskAsync(id, req);
             if (data == null)

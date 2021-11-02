@@ -35,5 +35,11 @@ namespace BlazorTodoListWasm.Services
             var list = await _httpClient.GetFromJsonAsync<List<TodoVm>>(uri);
             return list;
         }
+
+        public async Task<bool> UpdateAsync(Guid Id, RequestTodoUpdate req)
+        {
+            var result = await _httpClient.PutAsJsonAsync($"Todoes/Edit/{Id}", req);
+            return result.IsSuccessStatusCode;
+        }
     }
 }
