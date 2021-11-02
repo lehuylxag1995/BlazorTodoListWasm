@@ -9,6 +9,18 @@
     }
   },
   "profiles": {
+    "Blazor API Watch": {
+      "commandName": "Executable",
+      "dotnetRunMessages": "true",
+      "launchBrowser": false,
+      "executablePath": "dotnet",
+      "commandLineArgs": "watch run",
+      "workingDirectory": "$(ProjectDir)",
+      "applicationUrl": "https://localhost:5001;",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "BlazorTodoList.Api": {
       "commandName": "Project",
       "dotnetRunMessages": "true",

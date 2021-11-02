@@ -8,6 +8,18 @@
     }
   },
   "profiles": {
+    "Blazor Watch": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "commandLineArgs": "watch run",
+      "workingDirectory": "$(ProjectDir)",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5002;",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": "true"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
