@@ -6,37 +6,32 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorTodoListWasm.Pages
+namespace BlazorTodoListWasm.Components
 {
-    public partial class TodoList
+    public partial class FormSearchComponent
     {
-        [Inject]
-        private ITodoService _todoService { set; get; }
+        [Parameter]
+        public EventCallback<RequestFormSearch> OnSearch { get; set; }
+
         [Inject]
         private IUserService _userService { set; get; }
-        [Inject]
-        private NavigationManager MyNavigationManager { get; set; }
 
-        private List<TodoVm> _ListTodo;
         private List<AssigneeVm> _ListAssignee;
         private string[] _ListPriority;
-        public RequestFormSearch reqSearch = new RequestFormSearch();
-
+        private RequestFormSearch reqSearch = new();
 
         protected override async Task OnInitializedAsync()
         {
             _ListAssignee = await _userService.GetAllAsync();
-            _ListTodo = await _todoService.GetListAsync(reqSearch);
             _ListPriority = Enum.GetNames(typeof(Priority));
         }
 
-        private async Task SubmitSearch(RequestFormSearch req)
+        protected async Task FormSearch()
         {
-            _ListTodo = await _todoService.GetListAsync(req);
+            await OnSearch.InvokeAsync(reqSearch);
         }
     }
 }
