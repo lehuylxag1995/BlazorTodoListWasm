@@ -45,12 +45,11 @@ else
         </table>
     </div>
 
-    @if (StateModal)
-    {
-        <ModalConfirm Title="Xoá công việc"
-                      Text="Bạn có chắc muốn xoá ?"
-                      ModalEvent="HandleDeleting" />
-    }
+    <ModalConfirm Title="Xoá công việc"
+                  Text="Bạn có chắc muốn xoá ?"
+                  @ref="modalDeleteConfirm"
+                  ModalEvent="ConfirmDelete" />
+
 
 }
 

@@ -1,20 +1,26 @@
-﻿<div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);"
-     aria-modal="true" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">@Title</h4>
-                <button type="button" class="close" @onclick="ModalCancel">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>@Text</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" @onclick="ModalOpen">OK</button>
+﻿
+@if (OnOffModal)
+{
+    <div class="modal fade show" id="myModal" style="display:block; background-color: rgba(10,10,10,.8);"
+         aria-modal="true" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@Title</h4>
+                    <button type="button" class="close" @onclick="()=> ConfirmDelete(false)">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>@Text</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="()=>ConfirmDelete(false)">Cancle</button>
+                    <button type="button" class="btn btn-danger" @onclick="()=>ConfirmDelete(true)">Ok</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+
 @code {
     [Parameter]
     public string Title { get; set; }
@@ -25,13 +31,17 @@
     [Parameter]
     public EventCallback<bool> ModalEvent { get; set; }
 
-    private async Task ModalCancel()
+    private bool OnOffModal { get; set; }
+
+    public void ModalShow()
     {
-        await ModalEvent.InvokeAsync(false);
+        OnOffModal = true;
+        StateHasChanged();
     }
 
-    private async Task ModalOpen()
+    public async Task ConfirmDelete(bool value)
     {
-        await ModalEvent.InvokeAsync(true);
+        OnOffModal = false;
+        await ModalEvent.InvokeAsync(value);
     }
 }

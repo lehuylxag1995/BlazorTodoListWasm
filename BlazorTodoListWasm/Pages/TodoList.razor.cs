@@ -2,6 +2,7 @@
 using BlazorTodoList.ViewModel.Enums;
 using BlazorTodoList.ViewModel.TodoViewModel;
 using BlazorTodoList.ViewModel.UserViewModel;
+using BlazorTodoListWasm.Components;
 using BlazorTodoListWasm.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -29,10 +30,10 @@ namespace BlazorTodoListWasm.Pages
         private List<AssigneeVm> _ListAssignee;
         private string[] _ListPriority;
         public RequestFormSearch reqSearch = new RequestFormSearch();
-        private Guid? IdDelete;
 
         //Modal
-        public bool StateModal { get; set; } = false;
+        private Guid? IdDelete;
+        public ModalConfirm modalDeleteConfirm { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -49,21 +50,17 @@ namespace BlazorTodoListWasm.Pages
         public void ShowModal(Guid Id)
         {
             IdDelete = Id;
-            StateModal = true;
-            StateHasChanged();
+            modalDeleteConfirm.ModalShow();
         }
 
-        public async Task HandleDeleting()
+        public async Task ConfirmDelete(bool value)
         {
-            if (IdDelete.HasValue)
+            if (value && IdDelete.HasValue)
             {
                 var isSuccess = await _todoService.DeleteAsync(IdDelete.Value);
                 _toastService.ShowSuccess("Thành công", "Bạn đã xoá việc cần làm");
                 _ListTodo = await _todoService.GetListAsync(reqSearch);
             }
-
-            StateModal = false;
-            StateHasChanged();
         }
     }
 }
