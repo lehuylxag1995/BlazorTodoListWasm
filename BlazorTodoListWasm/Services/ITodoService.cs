@@ -12,5 +12,6 @@ namespace BlazorTodoListWasm.Services
         public Task<TodoVm> GetInfoTodoByIdAsync(string Id);
         public Task<bool> CreateAsync(RequestTodoCreate req);
         public Task<bool> UpdateAsync(Guid Id, RequestTodoUpdate req);
+        public Task<bool> DeleteAsync(Guid Id);
     }
 }

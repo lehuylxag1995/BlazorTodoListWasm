@@ -23,6 +23,12 @@ namespace BlazorTodoListWasm.Services
             return result.IsSuccessStatusCode;
         }
 
+        public async Task<bool> DeleteAsync(Guid Id)
+        {
+            var result = await _httpClient.DeleteAsync($"Todoes/Remove/{Id}");
+            return result.IsSuccessStatusCode;
+        }
+
         public async Task<TodoVm> GetInfoTodoByIdAsync(string Id)
         {
             var data = await _httpClient.GetFromJsonAsync<TodoVm>($"Todoes/Get/{Id}");

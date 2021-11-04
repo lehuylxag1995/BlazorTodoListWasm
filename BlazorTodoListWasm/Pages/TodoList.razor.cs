@@ -1,9 +1,11 @@
-﻿using BlazorTodoList.ViewModel.Enums;
+﻿using Blazored.Toast.Services;
+using BlazorTodoList.ViewModel.Enums;
 using BlazorTodoList.ViewModel.TodoViewModel;
 using BlazorTodoList.ViewModel.UserViewModel;
 using BlazorTodoListWasm.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Web;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,13 +21,18 @@ namespace BlazorTodoListWasm.Pages
         [Inject]
         private IUserService _userService { set; get; }
         [Inject]
+        private IToastService _toastService { get; set; }
+        [Inject]
         private NavigationManager MyNavigationManager { get; set; }
 
         private List<TodoVm> _ListTodo;
         private List<AssigneeVm> _ListAssignee;
         private string[] _ListPriority;
         public RequestFormSearch reqSearch = new RequestFormSearch();
+        private Guid? IdDelete;
 
+        //Modal
+        public bool StateModal { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -37,6 +44,26 @@ namespace BlazorTodoListWasm.Pages
         private async Task SubmitSearch(RequestFormSearch req)
         {
             _ListTodo = await _todoService.GetListAsync(req);
+        }
+
+        public void ShowModal(Guid Id)
+        {
+            IdDelete = Id;
+            StateModal = true;
+            StateHasChanged();
+        }
+
+        public async Task HandleDeleting()
+        {
+            if (IdDelete.HasValue)
+            {
+                var isSuccess = await _todoService.DeleteAsync(IdDelete.Value);
+                _toastService.ShowSuccess("Thành công", "Bạn đã xoá việc cần làm");
+                _ListTodo = await _todoService.GetListAsync(reqSearch);
+            }
+
+            StateModal = false;
+            StateHasChanged();
         }
     }
 }
