@@ -35,6 +35,7 @@ namespace BlazorTodoList.ViewModel
 
             services.AddTransient<ITodoService, TodoService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITodoUserService, TodoUserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

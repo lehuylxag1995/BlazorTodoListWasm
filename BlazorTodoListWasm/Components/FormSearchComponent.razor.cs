@@ -31,7 +31,7 @@ namespace BlazorTodoListWasm.Components
 
         protected async Task FormSearch()
         {
-            await OnSearch.InvokeAsync(reqSearch);
+            await OnSearch.InvokeAsync(reqSearch); //Gọi Component cha bắt sự kiện
         }
     }
 }

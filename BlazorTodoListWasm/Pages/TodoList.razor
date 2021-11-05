@@ -1,4 +1,5 @@
-﻿@page "/todoList"
+﻿@using BlazorTodoListWasm.Pages.Components
+@page "/todoList"
 
 
 @if (_ListTodo == null || _ListAssignee is null)
@@ -32,7 +33,7 @@ else
                         <td>@todo.NameTodo</td>
                         <td><PriorityBadgeComponent Priority="@todo.Priority" /></td>
                         <td><StatusBadgeComponent Status="@todo.Status" /></td>
-                        <td>@todo.AssigneeName</td>
+                        <td><span @onclick="()=>ShowDialogAssign(todo.Id)">@(!string.IsNullOrEmpty(todo.AssigneeName) ? todo.AssigneeName : "N/A")</span></td>
                         <td>@todo.CreatedDate.ToShortDateString()</td>
                         <td>
                             <a href="@MyNavigationManager.Uri/Detail/@todo.Id">Detail</a> |
@@ -50,7 +51,8 @@ else
                   @ref="modalDeleteConfirm"
                   ModalEvent="ConfirmDelete" />
 
-
+    <ModalAssignee @ref="modalAssign" 
+                   OnClickModal="ConfirmAssignUser"/>
 }
 
 

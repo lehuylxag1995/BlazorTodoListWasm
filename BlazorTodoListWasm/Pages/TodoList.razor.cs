@@ -3,6 +3,7 @@ using BlazorTodoList.ViewModel.Enums;
 using BlazorTodoList.ViewModel.TodoViewModel;
 using BlazorTodoList.ViewModel.UserViewModel;
 using BlazorTodoListWasm.Components;
+using BlazorTodoListWasm.Pages.Components;
 using BlazorTodoListWasm.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -31,9 +32,12 @@ namespace BlazorTodoListWasm.Pages
         private string[] _ListPriority;
         public RequestFormSearch reqSearch = new RequestFormSearch();
 
-        //Modal
+        //Modal Delete todo
         private Guid? IdDelete;
-        public ModalConfirm modalDeleteConfirm { get; set; }
+        public ModalConfirm modalDeleteConfirm;
+
+        //Modal Assign Todo
+        private ModalAssignee modalAssign;
 
         protected override async Task OnInitializedAsync()
         {
@@ -59,6 +63,21 @@ namespace BlazorTodoListWasm.Pages
             {
                 var isSuccess = await _todoService.DeleteAsync(IdDelete.Value);
                 _toastService.ShowSuccess("Thành công", "Bạn đã xoá việc cần làm");
+                _ListTodo = await _todoService.GetListAsync(reqSearch);
+            }
+        }
+
+        public void ShowDialogAssign(Guid Id)
+        {
+            modalAssign.IdTodo = Id;
+            modalAssign.ShowModal();
+        }
+
+        public async Task ConfirmAssignUser(bool value)
+        {
+            //Nếu người dùng xác nhận gán quyền xong thì load lại trang
+            if (value)
+            {
                 _ListTodo = await _todoService.GetListAsync(reqSearch);
             }
         }

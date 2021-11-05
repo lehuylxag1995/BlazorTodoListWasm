@@ -1,0 +1,80 @@
+﻿
+
+@if (OnOffModal && _ListUser != null)
+{
+    <div class="modal fade show d-block" id="ModalAssign" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <EditForm Model="req" OnSubmit="HanleAssignee">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                        <button type="button" class="close" @onclick="CloseModal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Giao việc cho:</label>
+                            <InputSelect class="custom-select" @bind-Value="req.IdUser">
+                                <option value="">- Không chọn ai -</option>
+                                @foreach (var item in _ListUser)
+                                    {
+                                    <option value="@item.Id">@item.FullName</option>
+                                    }
+                            </InputSelect>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseModal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    private ITodoUserService _todoUserService { get; set; }
+
+    [Inject]
+    private IUserService _userService { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> OnClickModal { get; set; }
+
+    private List<AssigneeVm> _ListUser = new();
+    private RequestAssignUser req = new();
+    private bool OnOffModal;
+    public Guid? IdTodo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _ListUser = await _userService.GetAllAsync();
+    }
+
+    public void ShowModal()
+    {
+        OnOffModal = true;
+        StateHasChanged();
+    }
+
+    private void CloseModal()
+    {
+        OnOffModal = false;
+        StateHasChanged();
+    }
+
+    private async Task HanleAssignee()
+    {
+        if (IdTodo.HasValue)
+            req.IdTodo = IdTodo.Value;
+
+        await _todoUserService.AssignUserAsync(req);
+
+        CloseModal();
+        await OnClickModal.InvokeAsync(true);
+    }
+}

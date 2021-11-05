@@ -32,6 +32,7 @@ namespace BlazorTodoListWasm
 
             builder.Services.AddTransient<ITodoService, TodoService>();
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<ITodoUserService, TodoUserService>();
 
             await builder.Build().RunAsync();
         }
