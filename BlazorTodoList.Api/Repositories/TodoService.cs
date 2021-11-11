@@ -1,5 +1,6 @@
 ﻿using BlazorTodoList.Api.Entities;
 using BlazorTodoList.ViewModel.Data;
+using BlazorTodoList.ViewModel.PagingViewModel;
 using BlazorTodoList.ViewModel.TodoViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -71,6 +72,46 @@ namespace BlazorTodoList.ViewModel.Repositories
             }).OrderByDescending(x => x.CreatedDate).ToListAsync();
 
             return data;
+        }
+
+        public async Task<PagingVm<TodoVm>> GetPagingAsync(RequestFormSearch reqSearch)
+        {
+            var query = _context.Todoes.OrderByDescending(x => x.CreatedDate).Include(x => x.Assignee).AsQueryable();
+            if (!string.IsNullOrEmpty(reqSearch.Name))
+            {
+                query = query.Where(x => x.NameTodo.Contains(reqSearch.Name));
+            }
+
+            if (reqSearch.Assignee.HasValue)
+            {
+                query = query.Where(x => x.AssignId.Value.Equals(reqSearch.Assignee.Value));
+            }
+
+            if (reqSearch.Priority.HasValue)
+            {
+                query = query.Where(x => x.Priority.Equals(reqSearch.Priority.Value));
+            }
+            
+            var totalRecord = await query.CountAsync();
+            query = query.Skip((reqSearch.PageIndex - 1) * reqSearch.PageSize).Take(reqSearch.PageSize);
+            
+            var data = await query.Select(x => new TodoVm()
+            {
+                Id = x.Id,
+                CreatedDate = x.CreatedDate,
+                NameTodo = x.NameTodo,
+                Priority = x.Priority,
+                Status = x.Status,
+                AssigneeName = x.Assignee != null ? x.Assignee.FirstName + " " + x.Assignee.LastName : ""
+            }).ToListAsync();
+
+            var result = new PagingVm<TodoVm>()
+            {
+                TotalRecord = totalRecord,
+                Data = data
+            };
+
+            return result;
         }
 
         public async Task<TodoVm> GetTaskByIdAsync(Guid Id)

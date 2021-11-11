@@ -1,4 +1,5 @@
-﻿using BlazorTodoList.ViewModel.TodoViewModel;
+﻿using BlazorTodoList.ViewModel.PagingViewModel;
+using BlazorTodoList.ViewModel.TodoViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace BlazorTodoList.ViewModel.Repositories
 {
     public interface ITodoService
     {
+        public Task<PagingVm<TodoVm>> GetPagingAsync(RequestFormSearch reqSearch);
         public Task<List<TodoVm>> GetListAsync(RequestFormSearch reqSearch);
         public Task<Guid> CreateTaskAsync(RequestTodoCreate req);
         public Task<TodoVm> UpdateTaskAsync(Guid Id, RequestTodoUpdate req);

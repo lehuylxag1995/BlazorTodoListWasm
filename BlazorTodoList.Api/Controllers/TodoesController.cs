@@ -32,7 +32,7 @@ namespace BlazorTodoList.ViewModel.Controllers
         [HttpGet("List")]
         public async Task<IActionResult> GetList([FromQuery]RequestFormSearch reqSearch)
         {
-            var list = await _todoService.GetListAsync(reqSearch);
+            var list = await _todoService.GetPagingAsync(reqSearch);
             if (list == null)
                 return BadRequest("Không lấy được danh sách");
             return Ok(list);

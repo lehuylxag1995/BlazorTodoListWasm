@@ -2,21 +2,20 @@
 @page "/todoList"
 
 
-@if (_ListTodo == null || _ListAssignee is null)
+@if (_Paging == null || _ListAssignee is null)
 {
     <h3>Loading...</h3>
 }
 else
 {
     <div class="row">
-        <FormSearchComponent OnSearch="SubmitSearch" />
+        <FormSearchComponent OnSearch="ListPaging" />
     </div>
 
     <div class="row">
         <table class="table">
             <thead>
                 <tr>
-                    @*<th>Id</th>*@
                     <th>Name</th>
                     <th>Priority</th>
                     <th>Status</th>
@@ -26,10 +25,9 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var todo in _ListTodo)
+                @foreach (var todo in _Paging.Data)
                 {
                     <tr>
-                        @*<td>@todo.Id</td>*@
                         <td>@todo.NameTodo</td>
                         <td><PriorityBadgeComponent Priority="@todo.Priority" /></td>
                         <td><StatusBadgeComponent Status="@todo.Status" /></td>
@@ -46,13 +44,19 @@ else
         </table>
     </div>
 
+    <div>
+        <Pagination @ref="_Pagination"
+                    TotalPages="TotalPages"
+                    SelectedPage="SelectedPage" />
+    </div>
+
     <ModalConfirm Title="Xoá công việc"
                   Text="Bạn có chắc muốn xoá ?"
                   @ref="modalDeleteConfirm"
                   ModalEvent="ConfirmDelete" />
 
-    <ModalAssignee @ref="modalAssign" 
-                   OnClickModal="ConfirmAssignUser"/>
+    <ModalAssignee @ref="modalAssign"
+                   OnClickModal="ConfirmAssignUser" />
 }
 
 

@@ -1,0 +1,62 @@
+﻿
+<nav>
+    <ul class="pagination justify-content-center">
+        @foreach (var link in links)
+        {
+            <li @onclick="()=>SelectedPageInternal(link)" class="page-item @(link.Active ? "active":null) @(link.Disable ? "disabled":null) ">
+                <span class="page-link">@link.TextPage</span>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+
+    [Parameter] public EventCallback<int> SelectedPage { get; set; }
+    [Parameter] public decimal TotalPages { get; set; }
+
+    public int CurrentPage = 1;
+    public int Radius = 2;
+    public List<LinkVm> links;
+
+
+    protected override void OnParametersSet()
+    {
+        LoadPages();
+    }
+
+    private void LoadPages()
+    {
+        links = new List<LinkVm>();
+
+        //Previous
+        var isDisabledButtonPrevious = CurrentPage == 1;
+        var previous = CurrentPage - 1;
+        links.Add(new LinkVm(previous, false, isDisabledButtonPrevious, "Trước"));
+
+        for (int i = 1; i <= TotalPages; i++)
+        {
+            if (i >= CurrentPage - Radius && i <= CurrentPage + Radius)
+            {
+                var active = CurrentPage == i;
+                links.Add(new LinkVm(i, active));
+            }
+        }
+
+        var isActiveButtonNext = CurrentPage == TotalPages;
+        var next = CurrentPage + 1;
+        links.Add(new LinkVm(next, false, isActiveButtonNext, "Sau"));
+    }
+
+    private async Task SelectedPageInternal(LinkVm link)
+    {
+        if (link.Page == CurrentPage)
+            return;
+
+        if (link.Disable || link.Active)
+            return;
+
+        CurrentPage = link.Page;
+        await SelectedPage.InvokeAsync(link.Page);
+    }
+}

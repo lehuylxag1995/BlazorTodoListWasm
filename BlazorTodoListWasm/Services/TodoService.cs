@@ -1,4 +1,5 @@
-﻿using BlazorTodoList.ViewModel.TodoViewModel;
+﻿using BlazorTodoList.ViewModel.PagingViewModel;
+using BlazorTodoList.ViewModel.TodoViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,13 @@ namespace BlazorTodoListWasm.Services
         {
             string uri = $"Todoes/List?Name={reqSearch.Name}&Assignee={reqSearch.Assignee}&Priority={reqSearch.Priority}";
             var list = await _httpClient.GetFromJsonAsync<List<TodoVm>>(uri);
+            return list;
+        }
+
+        public async Task<PagingVm<TodoVm>> GetPagingAsync(RequestFormSearch reqSearch)
+        {
+            string uri = $"Todoes/List?PageIndex={reqSearch.PageIndex}&PageSize={reqSearch.PageSize}&Name={reqSearch.Name}&Assignee={reqSearch.Assignee}&Priority={reqSearch.Priority}";
+            var list = await _httpClient.GetFromJsonAsync<PagingVm<TodoVm>>(uri);
             return list;
         }
 
